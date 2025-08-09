@@ -30,6 +30,10 @@ export class VideosService {
       queryBuilder.orderBy('video.created_at', 'DESC');
     }
 
+    if (query?.limit != null) {
+      queryBuilder.take(query.limit);
+    }
+
     return queryBuilder.getMany();
   }
 }

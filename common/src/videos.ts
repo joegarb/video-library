@@ -17,6 +17,7 @@ export const VideoQuerySchema = z.object({
     .enum(['created_at_asc', 'created_at_desc'])
     .optional()
     .default('created_at_desc'),
+  limit: z.coerce.number().int().min(1).max(100).optional(),
 });
 
 export type VideoQuery = z.infer<typeof VideoQuerySchema>;

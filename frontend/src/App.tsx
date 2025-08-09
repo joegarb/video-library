@@ -1,7 +1,13 @@
 import { HeroUIProvider } from '@heroui/react';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { useState } from 'react';
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
-import Home from './pages/Home';
 import Videos from './pages/Videos';
 import { ThemeProvider } from './providers/ThemeProvider';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -14,7 +20,7 @@ const router = createBrowserRouter([
     element: <MainLayout />,
     errorElement: <ErrorFallback />,
     children: [
-      { index: true, element: <Home /> },
+      { index: true, element: <Navigate to="/videos" replace /> },
       { path: 'videos', element: <Videos /> },
       { path: '*', element: <NotFound /> },
     ],
@@ -22,13 +28,20 @@ const router = createBrowserRouter([
 ]);
 
 export default function App() {
+  const [queryClient] = useState(() => new QueryClient());
   return (
     <HeroUIProvider>
-      <ThemeProvider>
-        <ErrorBoundary FallbackComponent={ErrorFallback}>
-          <RouterProvider router={router} />
-        </ErrorBoundary>
-      </ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <ErrorBoundary FallbackComponent={ErrorFallback}>
+            <RouterProvider router={router} />
+            <ReactQueryDevtools
+              initialIsOpen={false}
+              buttonPosition="bottom-left"
+            />
+          </ErrorBoundary>
+        </ThemeProvider>
+      </QueryClientProvider>
     </HeroUIProvider>
   );
 }

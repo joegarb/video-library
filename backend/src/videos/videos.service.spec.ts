@@ -21,6 +21,7 @@ describe('VideosService', () => {
 
   const mockQueryBuilder = {
     orderBy: jest.fn().mockReturnThis(),
+    take: jest.fn().mockReturnThis(),
     getMany: jest.fn(),
   };
 
@@ -85,6 +86,16 @@ describe('VideosService', () => {
         'video.created_at',
         'ASC',
       );
+    });
+
+    it('should apply limit when query.limit is provided', async () => {
+      const mockVideos = [mockVideoEntity];
+      mockQueryBuilder.getMany.mockResolvedValue(mockVideos);
+
+      const result = await service.findAll({ limit: 10 });
+
+      expect(result).toEqual(mockVideos);
+      expect(mockQueryBuilder.take).toHaveBeenCalledWith(10);
     });
   });
 });
