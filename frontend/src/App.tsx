@@ -1,6 +1,5 @@
 import { HeroUIProvider } from '@heroui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useState } from 'react';
 import {
   createBrowserRouter,
@@ -35,10 +34,6 @@ export default function App() {
         <ThemeProvider>
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <RouterProvider router={router} />
-            <ReactQueryDevtools
-              initialIsOpen={false}
-              buttonPosition="bottom-left"
-            />
           </ErrorBoundary>
         </ThemeProvider>
       </QueryClientProvider>

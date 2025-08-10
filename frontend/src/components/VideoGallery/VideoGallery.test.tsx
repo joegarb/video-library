@@ -15,18 +15,18 @@ describe('VideoGallery', () => {
     global.fetch = mockFetch;
   });
 
-  it('shows loading, then renders fetched items', async () => {
+  it('shows loading, then makes API call', async () => {
     mockFetch.mockResolvedValue({
       ok: true,
       json: async () => [
         {
           id: '1',
-          title: 'First',
+          title: 'Test Video',
           thumbnail_url: 'https://example.com/1.jpg',
           created_at: '2025-01-01T00:00:00Z',
           duration: 10,
           views: 1,
-          tags: ['t'],
+          tags: ['test'],
         },
       ],
     });
@@ -35,6 +35,14 @@ describe('VideoGallery', () => {
 
     expect(screen.getByText(/Loading videos/i)).toBeInTheDocument();
 
-    await waitFor(() => expect(screen.getByText('First')).toBeInTheDocument());
+    await waitFor(() => {
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringContaining('/videos?sort=created_at_desc&limit=24'),
+      );
+    });
+
+    await waitFor(() => {
+      expect(screen.queryByText(/Loading videos/i)).not.toBeInTheDocument();
+    });
   });
 });

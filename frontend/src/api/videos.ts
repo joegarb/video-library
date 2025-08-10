@@ -1,9 +1,10 @@
 import { z } from 'zod';
-import { type Video, VideoSchema } from 'veed-library-common';
+import { type Video, VideoSchema } from 'video-library-common';
 
 export type GetVideosParams = {
   sort?: 'created_at_desc' | 'created_at_asc';
   limit?: number;
+  after?: string;
 };
 
 const VideoApiSchema = VideoSchema.extend({ created_at: z.coerce.date() });
@@ -17,6 +18,7 @@ export async function fetchVideos(
   const url = new URL('/videos', baseUrl);
   if (params.sort) url.searchParams.set('sort', params.sort);
   if (params.limit != null) url.searchParams.set('limit', String(params.limit));
+  if (params.after) url.searchParams.set('after', params.after);
 
   const response = await fetch(url.toString());
   if (!response.ok) {

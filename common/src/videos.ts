@@ -18,6 +18,7 @@ export const VideoQuerySchema = z.object({
     .optional()
     .default('created_at_desc'),
   limit: z.coerce.number().int().min(1).max(100).optional(),
+  after: z.string().optional(),
 });
 
 export type VideoQuery = z.infer<typeof VideoQuerySchema>;
