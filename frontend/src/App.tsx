@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
 import Videos from './pages/Videos';
+import CreateVideo from './pages/CreateVideo';
 import { ThemeProvider } from './providers/ThemeProvider';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorFallback from './components/ErrorFallback';
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Navigate to="/videos" replace /> },
       { path: 'videos', element: <Videos /> },
+      { path: 'create-video', element: <CreateVideo /> },
       { path: '*', element: <NotFound /> },
     ],
   },

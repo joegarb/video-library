@@ -1,13 +1,18 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query } from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
   ApiResponse,
   ApiOkResponse,
   ApiQuery,
+  ApiBody,
 } from '@nestjs/swagger';
 import { VideosService } from './videos.service';
-import { Video, VideoQuerySchema } from 'video-library-common';
+import {
+  Video,
+  VideoQuerySchema,
+  CreateVideoSchema,
+} from 'video-library-common';
 import { ZodValidationPipe } from 'nestjs-zod';
 import { z } from 'zod';
 import { VideoResponseDto } from './videos.dto';
@@ -79,5 +84,57 @@ export class VideosController {
       views: video.views,
       tags: video.tags,
     }));
+  }
+
+  @Post()
+  @ApiOperation({
+    summary: 'Create a new video',
+    description: 'Create a new video with required title and optional tags',
+  })
+  @ApiBody({
+    description: 'Video creation data',
+    schema: {
+      type: 'object',
+      required: ['title'],
+      properties: {
+        title: {
+          type: 'string',
+          description: 'Video title (required)',
+          minLength: 1,
+        },
+        tags: {
+          type: 'array',
+          items: { type: 'string' },
+          description: 'Optional array of video tags',
+        },
+      },
+    },
+  })
+  @ApiOkResponse({
+    description: 'Video created successfully',
+    type: VideoResponseDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request - invalid input data',
+  })
+  @ApiResponse({
+    status: 500,
+    description: 'Internal server error',
+  })
+  async create(
+    @Body(new ZodValidationPipe(CreateVideoSchema))
+    createVideoDto: z.infer<typeof CreateVideoSchema>,
+  ): Promise<Video> {
+    const video = await this.videosService.create(createVideoDto);
+    return {
+      id: video.id,
+      title: video.title,
+      thumbnail_url: video.thumbnail_url,
+      created_at: video.created_at.toISOString(),
+      duration: video.duration,
+      views: video.views,
+      tags: video.tags,
+    };
   }
 }

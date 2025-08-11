@@ -22,3 +22,10 @@ export const VideoQuerySchema = z.object({
 });
 
 export type VideoQuery = z.infer<typeof VideoQuerySchema>;
+
+export const CreateVideoSchema = z.object({
+  title: z.string().min(1),
+  tags: z.array(z.string()).optional(),
+});
+
+export type CreateVideo = z.infer<typeof CreateVideoSchema>;

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Video as VideoEntity } from './video.entity';
-import { VideoQuery } from 'video-library-common';
+import { VideoQuery, CreateVideo } from 'video-library-common';
 
 @Injectable()
 export class VideosService {
@@ -45,5 +45,19 @@ export class VideosService {
     }
 
     return queryBuilder.getMany();
+  }
+
+  async create(createVideoDto: CreateVideo): Promise<VideoEntity> {
+    // Placeholder values for most fields since we haven't implemented uploading an actual video yet
+    const video = this.videoRepository.create({
+      id: crypto.randomUUID(),
+      title: createVideoDto.title,
+      tags: createVideoDto.tags || [],
+      thumbnail_url: 'https://picsum.photos/seed/placeholder/300/200',
+      duration: 0,
+      views: 0,
+    });
+
+    return this.videoRepository.save(video);
   }
 }
