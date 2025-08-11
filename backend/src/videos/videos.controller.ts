@@ -58,6 +58,33 @@ export class VideosController {
       type: 'string',
     },
   })
+  @ApiQuery({
+    name: 'search',
+    required: false,
+    description: 'Search term to filter videos by title (case-insensitive)',
+    schema: {
+      type: 'string',
+    },
+  })
+  @ApiQuery({
+    name: 'dateFrom',
+    required: false,
+    description:
+      'ISO date string for filtering videos created from this date onwards',
+    schema: {
+      type: 'string',
+      format: 'date-time',
+    },
+  })
+  @ApiQuery({
+    name: 'dateTo',
+    required: false,
+    description: 'ISO date string for filtering videos created up to this date',
+    schema: {
+      type: 'string',
+      format: 'date-time',
+    },
+  })
   @ApiOkResponse({
     description: 'List of videos retrieved successfully',
     type: [VideoResponseDto],

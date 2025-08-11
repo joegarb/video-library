@@ -1,6 +1,7 @@
 import { Spinner } from '@heroui/react';
 import { useState } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { useDebouncedCallback } from 'use-debounce';
 import { fetchVideos } from '../../api/videos';
 import { type Video } from 'video-library-common';
 import VideoGalleryControls from './VideoGalleryControls';
@@ -12,6 +13,19 @@ const PAGE_SIZE = 24;
 
 export default function VideoGallery() {
   const [sortOrder, setSortOrder] = useState<SortOption>('created_at_desc');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
+
+  const debouncedSetSearch = useDebouncedCallback((value: string) => {
+    setDebouncedSearchTerm(value);
+  }, 300);
+
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value);
+    debouncedSetSearch(value);
+  };
 
   const {
     data,
@@ -22,12 +36,18 @@ export default function VideoGallery() {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery<Video[]>({
-    queryKey: ['videos', { sort: sortOrder }],
+    queryKey: [
+      'videos',
+      { sort: sortOrder, search: debouncedSearchTerm, dateFrom, dateTo },
+    ],
     queryFn: ({ pageParam }) =>
       fetchVideos({
         sort: sortOrder,
         limit: PAGE_SIZE,
         after: pageParam as string | undefined,
+        search: debouncedSearchTerm || undefined,
+        dateFrom: dateFrom || undefined,
+        dateTo: dateTo || undefined,
       }),
     initialPageParam: undefined as string | undefined,
     getNextPageParam: (lastPage) => {
@@ -39,9 +59,26 @@ export default function VideoGallery() {
 
   const allVideos = data?.pages.flat() ?? [];
 
+  const handleClearFilters = () => {
+    setSearchTerm('');
+    setDebouncedSearchTerm('');
+    setDateFrom('');
+    setDateTo('');
+  };
+
   return (
     <div className="flex flex-col gap-4">
-      <VideoGalleryControls sortOrder={sortOrder} onSortChange={setSortOrder} />
+      <VideoGalleryControls
+        sortOrder={sortOrder}
+        onSortChange={setSortOrder}
+        searchTerm={searchTerm}
+        onSearchChange={handleSearchChange}
+        dateFrom={dateFrom}
+        onDateFromChange={setDateFrom}
+        dateTo={dateTo}
+        onDateToChange={setDateTo}
+        onClearFilters={handleClearFilters}
+      />
 
       {isLoading ? (
         <div className="flex w-full justify-center py-10">

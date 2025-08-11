@@ -7,6 +7,9 @@ export type GetVideosParams = {
   sort?: 'created_at_desc' | 'created_at_asc';
   limit?: number;
   after?: string;
+  search?: string;
+  dateFrom?: string;
+  dateTo?: string;
 };
 
 const VideosApiSchema = z.array(VideoSchema);
@@ -20,6 +23,9 @@ export async function fetchVideos(
   if (params.sort) url.searchParams.set('sort', params.sort);
   if (params.limit != null) url.searchParams.set('limit', String(params.limit));
   if (params.after) url.searchParams.set('after', params.after);
+  if (params.search) url.searchParams.set('search', params.search);
+  if (params.dateFrom) url.searchParams.set('dateFrom', params.dateFrom);
+  if (params.dateTo) url.searchParams.set('dateTo', params.dateTo);
 
   const response = await fetch(url.toString());
   if (!response.ok) {

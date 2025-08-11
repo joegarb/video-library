@@ -27,6 +27,22 @@ export class VideosService {
       queryBuilder.orderBy('video.created_at', 'DESC');
     }
 
+    if (query?.search) {
+      queryBuilder.andWhere('LOWER(video.title) LIKE LOWER(:search)', {
+        search: `%${query.search}%`,
+      });
+    }
+
+    if (query?.dateFrom) {
+      const dateFrom = new Date(query.dateFrom);
+      queryBuilder.andWhere('video.created_at >= :dateFrom', { dateFrom });
+    }
+
+    if (query?.dateTo) {
+      const dateTo = new Date(query.dateTo);
+      queryBuilder.andWhere('video.created_at <= :dateTo', { dateTo });
+    }
+
     if (query?.after) {
       const afterDate = new Date(query.after);
       if (query.sort === 'created_at_asc') {
