@@ -23,12 +23,12 @@ describe('fetchVideos', () => {
     const mockResponse = [
       {
         id: '1',
-        title: 'Test',
-        thumbnail_url: 'https://example.com/a.jpg',
+        title: 'Test Video',
+        thumbnail_url: 'https://example.com/1.jpg',
         created_at: '2025-01-01T00:00:00.000Z',
         duration: 10,
         views: 1,
-        tags: ['t1'],
+        tags: ['test'],
       },
     ];
 
@@ -37,17 +37,20 @@ describe('fetchVideos', () => {
       json: async () => mockResponse,
     });
 
-    const result = await fetchVideos({ sort: 'created_at_desc', limit: 5 });
+    const result = await fetchVideos({
+      sort: 'created_at_desc',
+      limit: 24,
+      after: '2025-01-01T00:00:00Z',
+    });
 
-    expect(mockFetch).toHaveBeenCalledTimes(1);
     const calledWith = mockFetch.mock.calls[0][0] as string;
-    expect(calledWith).toContain(`${BASE_URL}/videos?`);
+    expect(calledWith).toContain('http://localhost:3000/videos?');
     expect(calledWith).toContain('sort=created_at_desc');
-    expect(calledWith).toContain('limit=5');
-
+    expect(calledWith).toContain('limit=24');
+    expect(calledWith).toContain('after=2025-01-01T00%3A00%3A00Z');
     expect(result).toHaveLength(1);
     expect(result[0].id).toBe('1');
-    expect(result[0].created_at).toBeInstanceOf(Date);
+    expect(result[0].created_at).toBe('2025-01-01T00:00:00.000Z');
   });
 
   it('throws on non-ok response', async () => {

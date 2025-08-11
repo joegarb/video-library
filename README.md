@@ -11,6 +11,7 @@ npm run dev
 
 - Frontend: http://localhost:5173
 - Backend: http://localhost:3000
+- API Documentation: http://localhost:3000/docs
 
 ## Project Structure
 

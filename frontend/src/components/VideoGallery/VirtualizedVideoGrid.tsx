@@ -85,7 +85,7 @@ export default function VirtualizedVideoGrid({
                   key={video.id}
                   title={video.title}
                   thumbnailUrl={video.thumbnail_url}
-                  createdAt={video.created_at}
+                  createdAt={new Date(video.created_at)}
                   tags={video.tags}
                 />
               ))}

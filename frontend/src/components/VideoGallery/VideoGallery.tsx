@@ -2,6 +2,7 @@ import { Spinner } from '@heroui/react';
 import { useState } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchVideos } from '../../api/videos';
+import { type Video } from 'video-library-common';
 import VideoGalleryControls from './VideoGalleryControls';
 import VirtualizedVideoGrid from './VirtualizedVideoGrid';
 
@@ -20,18 +21,19 @@ export default function VideoGallery() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useInfiniteQuery({
+  } = useInfiniteQuery<Video[]>({
     queryKey: ['videos', { sort: sortOrder }],
     queryFn: ({ pageParam }) =>
       fetchVideos({
         sort: sortOrder,
         limit: PAGE_SIZE,
-        after: pageParam,
+        after: pageParam as string | undefined,
       }),
     initialPageParam: undefined as string | undefined,
     getNextPageParam: (lastPage) => {
       if (lastPage.length < PAGE_SIZE) return undefined;
-      return lastPage[lastPage.length - 1]?.created_at.toISOString();
+      const lastVideo = lastPage[lastPage.length - 1];
+      return lastVideo?.created_at;
     },
   });
 

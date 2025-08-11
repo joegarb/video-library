@@ -7,8 +7,7 @@ export type GetVideosParams = {
   after?: string;
 };
 
-const VideoApiSchema = VideoSchema.extend({ created_at: z.coerce.date() });
-const VideosApiSchema = z.array(VideoApiSchema);
+const VideosApiSchema = z.array(VideoSchema);
 
 export async function fetchVideos(
   params: GetVideosParams = {},
@@ -25,5 +24,6 @@ export async function fetchVideos(
     throw new Error(`Failed to load videos (${response.status})`);
   }
   const data = (await response.json()) as unknown;
+
   return VideosApiSchema.parse(data);
 }
