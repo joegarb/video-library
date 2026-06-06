@@ -25,7 +25,7 @@
     "tailwindcss": "^4.1.11",
     "use-debounce": "^10.0.5",
     "video-library-common": "file:../common",
-    "vitest": "^3.2.4",
+    "vitest": "^4.1.8",
     "zustand": "^5.0.7"
   },
   "devDependencies": {

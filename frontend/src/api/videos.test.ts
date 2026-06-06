@@ -4,18 +4,15 @@ import { fetchVideos } from './videos';
 const BASE_URL = 'http://localhost:3000';
 
 describe('fetchVideos', () => {
-  const originalEnv = { ...import.meta.env };
   const mockFetch = vi.fn();
 
   beforeEach(() => {
     global.fetch = mockFetch;
-    (import.meta.env as Record<string, string | boolean>) = {
-      ...originalEnv,
-      VITE_API_BASE_URL: BASE_URL,
-    };
+    vi.stubEnv('VITE_API_BASE_URL', BASE_URL);
   });
 
   afterEach(() => {
+    vi.unstubAllEnvs();
     vi.resetAllMocks();
   });
 
