@@ -19,6 +19,10 @@ updates:
       # hand when the runtime moves, not whenever a newer major is published.
       - dependency-name: "@types/node"
         update-types: ["version-update:semver-major"]
+      # TypeScript 7 is held back by typescript-eslint, whose peer range caps
+      # at <6.1. Revisit when typescript-eslint supports it.
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "github-actions"
     directory: "/"
