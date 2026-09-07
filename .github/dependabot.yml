@@ -9,6 +9,16 @@ updates:
         update-types:
           - "minor"
           - "patch"
+    ignore:
+      # NestJS 12 is blocked upstream: nestjs-zod has no Nest 12 support, so a
+      # major bump forces a duplicate @nestjs/core@11 and the app won't boot.
+      # Revisit when nestjs-zod supports Nest 12 (or is replaced).
+      - dependency-name: "@nestjs/*"
+        update-types: ["version-update:semver-major"]
+      # @types/node tracks the Node runtime major (currently 22); bump it by
+      # hand when the runtime moves, not whenever a newer major is published.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "github-actions"
     directory: "/"
