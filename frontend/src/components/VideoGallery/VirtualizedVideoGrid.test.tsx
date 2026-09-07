@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import VirtualizedVideoGrid from './VirtualizedVideoGrid';
 
 vi.mock('@tanstack/react-virtual', () => ({

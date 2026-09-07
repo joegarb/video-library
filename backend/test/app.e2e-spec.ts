@@ -1,9 +1,10 @@
+import { afterEach, beforeEach, describe, it } from 'vitest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { AppModule } from './../src/app.module';
 
-describe('AppController (e2e)', () => {
+describe('VideosController (e2e)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
@@ -15,11 +16,12 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', async () => {
+  afterEach(async () => {
+    await app.close();
+  });
+
+  it('/videos (GET)', async () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    await request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
+    await request(app.getHttpServer()).get('/videos').expect(200);
   });
 });

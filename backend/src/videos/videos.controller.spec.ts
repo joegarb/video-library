@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { VideosController } from './videos.controller';
 import { VideosService } from './videos.service';
@@ -13,7 +14,7 @@ describe('VideosController', () => {
         {
           provide: VideosService,
           useValue: {
-            findAll: jest.fn(),
+            findAll: vi.fn(),
           },
         },
       ],
@@ -25,7 +26,7 @@ describe('VideosController', () => {
 
   it('should call service.findAll when get is called', async () => {
     const mockVideos = [];
-    const findAllSpy = jest
+    const findAllSpy = vi
       .spyOn(service, 'findAll')
       .mockResolvedValue(mockVideos);
 

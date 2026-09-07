@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -20,9 +21,9 @@ describe('VideosService', () => {
   };
 
   const mockQueryBuilder = {
-    orderBy: jest.fn().mockReturnThis(),
-    take: jest.fn().mockReturnThis(),
-    getMany: jest.fn(),
+    orderBy: vi.fn().mockReturnThis(),
+    take: vi.fn().mockReturnThis(),
+    getMany: vi.fn(),
   };
 
   beforeEach(async () => {
@@ -32,7 +33,7 @@ describe('VideosService', () => {
         {
           provide: getRepositoryToken(VideoEntity),
           useValue: {
-            createQueryBuilder: jest.fn().mockReturnValue(mockQueryBuilder),
+            createQueryBuilder: vi.fn().mockReturnValue(mockQueryBuilder),
           },
         },
       ],
