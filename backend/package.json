@@ -26,7 +26,7 @@
     "@nestjs/platform-express": "^11.2.3",
     "@nestjs/swagger": "^11.4.7",
     "@nestjs/typeorm": "^11.0.3",
-    "nestjs-zod": "^4.3.1",
+    "nestjs-zod": "^5.5.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2",
     "sqlite3": "^6.0.1",
