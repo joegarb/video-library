@@ -6,7 +6,7 @@ import { SeedService } from './seed/seed.service';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'sqlite',
+      type: 'better-sqlite3',
       database: 'database.sqlite',
       entities: [Video],
       synchronize: process.env.NODE_ENV !== 'production', // Auto-create tables
