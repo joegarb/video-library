@@ -58,11 +58,16 @@ export default function CreateVideo() {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label htmlFor="title" className="block text-sm font-medium mb-2">
+          <label
+            id="title-label"
+            htmlFor="title"
+            className="block text-sm font-medium mb-2"
+          >
             Title *
           </label>
           <Input
             id="title"
+            aria-labelledby="title-label"
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -73,12 +78,17 @@ export default function CreateVideo() {
         </div>
 
         <div>
-          <label htmlFor="tags" className="block text-sm font-medium mb-2">
+          <label
+            id="tags-label"
+            htmlFor="tags"
+            className="block text-sm font-medium mb-2"
+          >
             Tags
           </label>
           <div className="flex gap-2 mb-2">
             <Input
               id="tags"
+              aria-labelledby="tags-label"
               type="text"
               value={newTag}
               onChange={(e) => setNewTag(e.target.value)}

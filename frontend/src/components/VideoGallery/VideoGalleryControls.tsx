@@ -49,6 +49,7 @@ export default function VideoGalleryControls({
       <div className="flex items-center gap-4">
         <Input
           type="text"
+          aria-label="Search videos by title"
           placeholder="Search videos by title..."
           value={searchTerm}
           onChange={(e) => onSearchChange(e.target.value)}
@@ -72,6 +73,7 @@ export default function VideoGalleryControls({
 
       <div className="flex items-center gap-4">
         <DateRangePicker
+          aria-label="Filter by date range"
           label="Filter by date range"
           className="w-80"
           value={
