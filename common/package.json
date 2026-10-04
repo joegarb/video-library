@@ -17,6 +17,7 @@
     "build": "npm run build:cjs && npm run build:esm",
     "dev": "concurrently --names \"cjs,esm\" --prefix-colors \"magenta,cyan\" \"tsc -w -p tsconfig.cjs.json\" \"tsc -w -p tsconfig.esm.json\"",
     "lint": "eslint \"src/**/*.ts\" --fix",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
     "format": "prettier --write \"src/**/*.ts\""
   },
   "dependencies": {
