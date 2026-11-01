@@ -19,7 +19,7 @@
     "typecheck": "npm run typecheck --workspace=common && npm run typecheck --workspace=frontend && npm run typecheck --workspace=backend"
   },
   "devDependencies": {
-    "concurrently": "^10.0.5",
+    "concurrently": "^10.0.6",
     "nodemon": "^3.1.10"
   }
 }
